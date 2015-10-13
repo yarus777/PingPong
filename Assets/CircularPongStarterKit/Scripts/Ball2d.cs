@@ -87,7 +87,7 @@ public class Ball2d : MonoBehaviour
 	public void OnGameStart ()
 	{
 		// PLACE THE BALL IN CENTER OF THE CIRCLE
-		this.tr.position		= Vector3.zero;
+        this.tr.position = new Vector3(0.2f, 0, 0);
 
 		// THE BALL WILL MOVE IN UP DIRECTION AT START
 		this.moveDirection		= Vector2.up;

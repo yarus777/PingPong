@@ -8,7 +8,6 @@ public class MenuLogic2d : MonoBehaviour
 
 	// MENU
 	public	GameObject			menuPanel;
-	public	Text				menuBestScore;
 
 	// GAME
 	public	GameObject			gamePanel;
@@ -37,11 +36,11 @@ public class MenuLogic2d : MonoBehaviour
 		this.menuPanel.SetActive 	 ( true  );
         this.pausePanel.SetActive(false);
 
-		this.menuBestScore.text = GameLogic2d.Instance.GetBestScore ().ToString ();
 	}
 
 	public void GameShow ()
 	{
+        Time.timeScale = 1;
 		this.menuPanel.SetActive 	 ( false );
 		this.gameOverPanel.SetActive ( false );
 		this.gamePanel.SetActive  	 ( true  );
@@ -57,7 +56,8 @@ public class MenuLogic2d : MonoBehaviour
 
 	public void GameOverShow ()
 	{
-		this.gamePanel.SetActive 	 ( false );
+        Time.timeScale = 0;
+		this.gamePanel.SetActive 	 ( true );
 		this.menuPanel.SetActive  	 ( false );
 		this.gameOverPanel.SetActive ( true  );
         this.pausePanel.SetActive(false);
@@ -93,7 +93,7 @@ public class MenuLogic2d : MonoBehaviour
     public void PressPauseButton()
     {
         Time.timeScale = 0;
-        this.gamePanel.SetActive(false);
+        this.gamePanel.SetActive(true);
         this.menuPanel.SetActive(false);
         this.gameOverPanel.SetActive(false);
         this.pausePanel.SetActive(true);
@@ -105,5 +105,14 @@ public class MenuLogic2d : MonoBehaviour
     {
         Time.timeScale = 1;
         this.GameShow();
+    }
+
+    public void PressMenuButton()
+    {
+        Time.timeScale = 0;
+        this.gamePanel.SetActive(false);
+        this.menuPanel.SetActive(true);
+        this.gameOverPanel.SetActive(false);
+        this.pausePanel.SetActive(false);
     }
 }
