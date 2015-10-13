@@ -31,6 +31,7 @@ public class MenuLogic2d : MonoBehaviour
 
 	public void MenuShow ()
 	{
+        Time.timeScale = 1;
 		this.gamePanel.SetActive	 ( false );
 		this.gameOverPanel.SetActive ( false );
 		this.menuPanel.SetActive 	 ( true  );
