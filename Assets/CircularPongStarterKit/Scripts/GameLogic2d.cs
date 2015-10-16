@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Assets.CircularPongStarterKit.Scripts;
 
 public class GameLogic2d : MonoBehaviour
 {
@@ -25,19 +26,31 @@ public class GameLogic2d : MonoBehaviour
 		Instance					= this;
 
 		Application.targetFrameRate = 60;
+
+        FBHelper.Init();
 	}
 
 	void Start ()
 	{
 		this.state = STATE.Menu;
-
+#if UNITY_ANDROID
+        Invoke("Preload", 1f);
+#endif
 		// SHOW START MENU
 		MenuLogic2d.Instance.MenuShow ();
 	}
 
+    void Preload()
+    {
+#if UNITY_ANDROID
+        AdSDK.PreloadFullscreen();
+#endif
+    }
+
 	void Update ()
 	{
 		this.HandlePlayerInput ();
+
 	}
 
 	#region PLAYER INPUT
@@ -84,6 +97,7 @@ public class GameLogic2d : MonoBehaviour
 
 	public void GameStart ()
 	{
+        
 		this.currentScore 	= 0;
 
 		this.gameSpeed		= this.initialGameSpeed;
@@ -117,6 +131,8 @@ public class GameLogic2d : MonoBehaviour
 		PaddlePivot2d.Instance.OnGameOver ();
 
 		this.state = STATE.GameOver;
+
+	    FullScreenHandler.ShowAds();
 	}
 
 	#region SCORE

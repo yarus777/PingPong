@@ -1,6 +1,8 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using Assets.CircularPongStarterKit.Scripts;
 
 public class MenuLogic2d : MonoBehaviour
 {
@@ -23,18 +25,44 @@ public class MenuLogic2d : MonoBehaviour
     public GameObject pausePanel;
     public Text pauseCurrentScore;
 
+    //SETTINGS
+
+    public GameObject settingsPanel;
+
 	void Awake ()
 	{
 		Instance = this;
 	}
 
+    	void Update ()
+	{
+        if ((Input.GetKeyDown(KeyCode.Escape)) || (Input.GetKeyDown(KeyCode.Backspace)))
+	    {
+	        OnBackPressed();
+	    }
+	}
+
+    public void OnBackPressed()
+    {
+        if (menuPanel.activeSelf)
+        {
+            Application.Quit();
+        }
+        else if (gamePanel.activeSelf && !settingsPanel.activeSelf && !gameOverPanel.activeSelf && !pausePanel.activeSelf)
+        {
+            MenuShow();
+        }
+    }
+
+
 	public void MenuShow ()
 	{
-        Time.timeScale = 1;
+        Time.timeScale = 0;
 		this.gamePanel.SetActive	 ( false );
 		this.gameOverPanel.SetActive ( false );
 		this.menuPanel.SetActive 	 ( true  );
         this.pausePanel.SetActive(false);
+        this.settingsPanel.SetActive(false);
 
 	}
 
@@ -45,6 +73,7 @@ public class MenuLogic2d : MonoBehaviour
 		this.gameOverPanel.SetActive ( false );
 		this.gamePanel.SetActive  	 ( true  );
         this.pausePanel.SetActive(false);
+        this.settingsPanel.SetActive(false);
 
 		this.GameUpdate ();
 	}
@@ -61,6 +90,7 @@ public class MenuLogic2d : MonoBehaviour
 		this.menuPanel.SetActive  	 ( false );
 		this.gameOverPanel.SetActive ( true  );
         this.pausePanel.SetActive(false);
+        this.settingsPanel.SetActive(false);
 
 		this.GameOverUpdate ();
 	}
@@ -97,6 +127,7 @@ public class MenuLogic2d : MonoBehaviour
         this.menuPanel.SetActive(false);
         this.gameOverPanel.SetActive(false);
         this.pausePanel.SetActive(true);
+        this.settingsPanel.SetActive(false);
 
         this.PauseUpdate();
     }
@@ -114,5 +145,56 @@ public class MenuLogic2d : MonoBehaviour
         this.menuPanel.SetActive(true);
         this.gameOverPanel.SetActive(false);
         this.pausePanel.SetActive(false);
+        this.settingsPanel.SetActive(false);
     }
+
+    public void PressMenuSettingsButton()
+    {
+        Time.timeScale = 0;
+
+        this.gamePanel.SetActive(false);
+        this.menuPanel.SetActive(true);
+        this.gameOverPanel.SetActive(false);
+        this.pausePanel.SetActive(false);
+        this.settingsPanel.SetActive(true);
+    }
+
+    public void PressGameSettingsButton()
+    {
+        Time.timeScale = 0;
+        this.settingsPanel.SetActive(true);
+    }
+
+    public void PressExitSettingsButton()
+    {
+        Time.timeScale = 0;
+        this.settingsPanel.SetActive(false);
+
+        if (gamePanel.active)
+        {
+            Time.timeScale = 1;
+        }
+    }
+
+
+    public void MusicToogleChanged(bool isChecked )
+    {
+            MusicManager.Instance.IsMusic = isChecked;
+            //Debug.Log("Checked"+isChecked);
+       
+    }
+
+    public void SoundToogleChanged(bool isChecked)
+    {
+       
+            MusicManager.Instance.IsSound = isChecked;
+            Debug.Log("IsSoundChecked" + isChecked);
+ 
+    }
+
+    public void PressShareButton()
+    {
+        FBHelper.Feed();
+    }
+
 }
